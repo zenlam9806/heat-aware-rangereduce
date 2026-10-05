@@ -1,0 +1,43 @@
+  cmpt_sty  cmpt_pri   T         P         B         E         M file_size   L1_size   blk_cch       BPK
+         1         1   6      1024        32       128   4194304   4194304  25165824         0        10
+=====================
+Column Family Name: default, Size: 91220128 bytes, Files Count: 24
+Level Stats:
+Level: 0, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 1, Files: 6, Size: 24198274 bytes, Entries: 173337, Deletions: 0
+Level: 2, Files: 18, Size: 67021854 bytes, Entries: 480905, Deletions: 0
+Level: 3, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 4, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 5, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 6, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 7, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 8, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 9, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 10, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 11, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 12, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 13, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 14, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 15, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 16, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 17, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 18, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+Level: 19, Files: 0, Size: 0 bytes, Entries: 0, Deletions: 0
+
+RocksDB Statistics: 
+rocksdb.compact.read.bytes: 1007285374
+rocksdb.compact.write.bytes: 954902016
+rocksdb.flush.write.bytes: 138304596
+rocksdb.rangereduce.file.count: 27
+rocksdb.rangereduce.write.bytes: 84892706
+rocksdb.compaction.times.micros: 0
+
+=====================
+Workload Execution Time: 251847805355
+Inserts Execution Time: 87282025965
+Updates Execution Time: 63338635974
+PointQuery Execution Time: 0
+PointDelete Execution Time: 0
+RangeQuery Execution Time: 98375302546
+RangeDelete Execution Time: 0
+===========END HERE=========
