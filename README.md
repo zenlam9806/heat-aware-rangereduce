@@ -78,6 +78,25 @@ N=500000 Q=100 bash demo/demo.sh     # larger demo: 500,000 keys, 100 range quer
 
 The script generates a dataset, runs RocksDB with RangeReduce and the heat-aware filter on it, lists the RocksDB files on disk, and then uses `demo/inspect_db` to open the database through the RocksDB API and print the number of keys, the LSM-tree levels, the first key-value pairs and the result of a range query.
 
+## How to check our results
+
+Every number, table, graph and screenshot in the report can be checked against the raw data in `results/`. Checks 1 to 3 need only Python and this repository; checks 4 and 5 need the RangeReduce build described above.
+
+1. **Numbers and tables** (seconds, standard-library Python only). This recomputes every derived number in the report (Tables I, III, IV, VI and VII, the confidence intervals, the decay and threshold results) from the raw files, and confirms that all systems returned the same number of entries for every query:
+   ```bash
+   python3 analysis/report_numbers.py
+   ```
+2. **Graphs (Figs. 8 to 12) and Tables III and V.** These scripts produced the report's figures; they write `figures/` and `tables/`, which can be compared with the report:
+   ```bash
+   python3 -m pip install -r requirements.txt
+   python3 analysis/plot_results.py results
+   python3 analysis/paired_table.py results
+   ```
+3. **Raw logs.** Each run folder (for example `results/main_hotcold/heat_rel_1.0/`) holds the per-query log `range_queries.csv` (latency and entries read and returned for each of the 500 queries), the filter's per-query decisions `heat.csv`, and RocksDB's own statistics in `stdout.log`. `results/summary.csv` has one row per run and can be opened in Excel.
+4. **Code screenshots (Figs. 3 to 5).** They show `patch/range_heat_tracker.h` (lines 47 to 83 and 126 to 147) and, after applying the patch to RangeReduce commit `4e19184`, lines 408 to 426 of `lib/rocksdb/db/arena_wrapped_db_iter.cc` (our hook is lines 416 to 423). To redraw them: `RR=/path/to/RangeReduce python3 analysis/make_code_figs.py results/demo_figures/demo_output.txt`.
+5. **Dataset and database screenshots (Figs. 1 and 2).** They come from `N=200000 Q=60 bash demo/demo.sh`; our output is saved in `results/demo_figures/demo_output.txt`. Running the demo again produces a byte-identical dataset and the same key-value pairs and counts; only the sizes of the newest files and RocksDB's estimated key count vary slightly with background-compaction timing (compare `demo_output_second_run.txt`).
+6. **Re-running the experiments.** `experiments/run_all.sh`, `run_repeat5.sh` and `run_decay.sh` repeat everything. The generated data and the result counts are reproducible; write volumes stay close; absolute latencies depend on the machine and vary from run to run on a hard disk, so compare relative results (see the report's repeatability section).
+
 ## Important durability limitation
 
 At 500,000 keys, the evaluated RangeReduce artifact and HA-RR (which builds on it) can lose access to keys after the database is closed and reopened: plain RocksDB returned all 500,000 keys, RangeReduce 449,196 by point lookup (393,759 by full scan) and HA-RR 476,484 (464,063). At 200,000 keys all three returned every key. Live-run result counts are equal across systems, but that does not establish restart durability. Do not use RangeReduce or HA-RR for real data until this is fixed. Details and the test script: `results/restart_check/`.

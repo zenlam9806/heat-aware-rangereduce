@@ -1,0 +1,58 @@
+Demo folder: /home/user/demo_fig2
+### Step 1: generate the dataset (200000 inserts, 200000 updates, 60 range queries)
+wrote 200000 inserts, 200000 updates, 60 range queries (47 hot) to workload.txt
+First 3 lines of workload.txt (I = insert, U = update, S = range scan):
+I ior8FDLdVMc2E3gY DBz7LgqwnI0v8hIhQCzoeu7IQSU9fd6zQKAwXbWj6
+I 9qD8NFdmEvXaooNe eXnGygQqu3plQp0rAoCQ85BiwXDyQ2tFFoppO3Kdw
+I p1c7ok6Scs6x5ElD MqvMYB9u9Ut2FHp9PybIALcWkCUzIVRaaKCaRDYzt
+S RIbc3LTUWF0gvJuv XZRcNBCPHYkNN90W
+S T0we2eoMtrKnazbM ZFyzQ9uYefi5qaWj
+
+### Step 2: run RocksDB + RangeReduce + our heat-aware filter on the dataset
+Range queries admitted by the heat filter: 48 of 60
+
+### Step 3: the RocksDB database on disk
+ 
+0 000004.log
+4.1M 000022.sst
+4.1M 000023.sst
+4.1M 000024.sst
+4.1M 000025.sst
+563K 000026.sst
+4.1M 000074.sst
+4.1M 000075.sst
+4.1M 000076.sst
+4.1M 000077.sst
+4.1M 000078.sst
+134K 000079.sst
+16 CURRENT
+36 IDENTITY
+0 LOCK
+237K LOG
+9.9K MANIFEST-000005
+6.9K OPTIONS-000007
+
+### Step 4: open the database and read from it
+== Database: db
+== Estimated number of keys: 279717
+== LSM-tree levels (files and size per level):
+Level Files Size(MB)
+--------------------
+  0        0        0
+  1        0        0
+  2        0        0
+  3        0        0
+  4        0        0
+  5        6       20
+  6        5       17
+
+== First 5 key-value pairs (sorted by key):
+  002aElOrEt9yk4Bs -> jpMFmwo1p5B7ur22arrP... (112 B)
+  003MOuC3LjQ8zNYm -> 7HvipiHRYHJHugmSZ1FZ... (112 B)
+  004J3vDfVQuqPN7X -> 6S04fJKEcUy5X00QNuTp... (112 B)
+  005E30rLqlV2PuMX -> 568eANGeIUdZHGdF21Xw... (112 B)
+  005osgjycHGMjrkl -> xEChAlIHFYus107Htnwu... (112 B)
+
+== Exact number of keys (full scan): 200000
+
+== Range query ["M", "M~"): 3299 entries
