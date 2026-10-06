@@ -1,4 +1,8 @@
-"""Checks that every finished system returned the same number of entries per range query as RocksDB."""
+"""Checks that every system in a workload folder returned the same NUMBER of entries for every range
+query as RocksDB. It compares result counts only; the run logs do not record the returned keys/values.
+Exits with status 1 if any count differs, so it can be used in scripts.
+Usage: python3 verify_results.py <results/workload_folder>
+"""
 import csv
 import pathlib
 import sys
@@ -17,5 +21,6 @@ for s in sorted(p for p in w.iterdir() if (p / "range_queries.csv").exists()):
     got = returned(s)
     same = got == ref
     ok &= same
-    print(f"{s.name:16s} queries={len(got)} total_returned={sum(got)} identical_to_rocksdb={same}")
-print("ALL IDENTICAL" if ok else "MISMATCH FOUND")
+    print(f"{s.name:16s} queries={len(got)} total_returned={sum(got)} same_counts_as_rocksdb={same}")
+print("ALL RESULT COUNTS IDENTICAL" if ok else "COUNT MISMATCH FOUND")
+sys.exit(0 if ok else 1)

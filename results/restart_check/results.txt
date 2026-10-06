@@ -1,3 +1,7 @@
+Command: N=200000 Q=60 bash run_check.sh  (first block)  and  N=500000 Q=100 bash run_check.sh  (second block).
+Note: these runs were made before the workload generator was made fully deterministic (see the report's
+validation section), so a re-run uses a slightly different key order; the expected outcome is the same pattern.
+
 Restart (close + reopen) integrity check, hot/cold workload, checked with demo/inspect_db-style program (full scan + Get of every inserted key)
 
 --- 200,000 keys, 60 range queries

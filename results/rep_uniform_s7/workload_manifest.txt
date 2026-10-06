@@ -1,0 +1,7 @@
+workload file   : workload.txt (not in the repository: 132018000 bytes)
+sha256          : 72c0d47d168448f93ad7707e1995be6195a1821f73f7ee2d87432c00bc6ab42e
+generator       : python3 experiments/gen_workload.py --pattern uniform -I 500000 -U 500000 -S 500 -Y 0.1 --seed 7 -o workload.txt
+python          : 3.14.4 (generator re-run on Linux-6.18.40.1-microsoft-standard-WSL2-x86_64-with-glibc2.43)
+regenerates byte-identically with today's generator: NO for the whole file (made before the fix that fixed the key insertion order), BUT the same keys and all 500 range queries in queries.csv regenerate exactly
+range queries   : 500 (start/end keys in queries.csv)
+used by         : every system folder in this directory (each run read this same file)

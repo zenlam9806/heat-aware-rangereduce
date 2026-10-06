@@ -114,8 +114,24 @@ def summarise(run_dir, inserts):
     }
 
 
+def finished(run_dir):
+    """A run is complete if run_suite.sh marked it done, or (for archived runs, whose markers were not
+    kept) if its per-query log exists and the engine's log reached its final line."""
+    if (run_dir / "done").exists():
+        return True
+    log = run_dir / "workload.log"
+    return (run_dir / "range_queries.csv").exists() and log.exists() and "END HERE" in log.read_text(errors="ignore")
+
+
 def main():
     root = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else "results")
+    out_rows = collect(root)
+    write_summary(root, out_rows)
+
+
+def collect(root):
+    """Builds one metrics row per finished run directly from the raw run logs."""
+    root = pathlib.Path(root)
     out_rows = []
     for wdir in sorted(p for p in root.iterdir() if p.is_dir()):
         gen = wdir / "gen.log"
@@ -123,7 +139,7 @@ def main():
         inserts = int(m[1]) if m else 0
         runs = {}
         for sdir in sorted(p for p in wdir.iterdir() if p.is_dir()):
-            if (sdir / "done").exists():
+            if finished(sdir):
                 runs[sdir.name] = summarise(sdir, inserts)
         if not runs:
             continue
@@ -132,6 +148,11 @@ def main():
             stats, levels = parse_log(wdir / name / "workload.log")
             r["compaction_debt_bytes"] = compaction_debt(levels, L)
             out_rows.append({"workload": wdir.name, "system": name, **r})
+    return out_rows
+
+
+def write_summary(root, out_rows):
+    root = pathlib.Path(root)
     if not out_rows:
         print("no finished runs")
         return
