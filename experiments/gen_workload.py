@@ -10,7 +10,7 @@ def random_keys(n, key_len, rng):
     keys = set()
     while len(keys) < n:
         keys.add("".join(rng.choices(ALPHABET, k=key_len)))
-    keys = list(keys)
+    keys = sorted(keys)  # a set's order changes between Python runs; sort so the seed alone decides the order
     rng.shuffle(keys)
     return keys
 
