@@ -46,6 +46,15 @@ python3 analyze.py results
 
 `gen_workload.py` writes workloads in the same `I`/`U`/`S` format as Tectonic, with three range-query patterns: `uniform`, `hotcold` and `shifting`.
 
+## Live demo: see the database and the dataset
+
+```bash
+bash demo/demo.sh                    # small, about 1 minute
+N=500000 Q=100 bash demo/demo.sh     # same size as the paper, several minutes
+```
+
+The script generates a dataset, runs RocksDB with RangeReduce and the heat-aware filter on it, lists the RocksDB files on disk, and then uses `demo/inspect_db` to open the database through the RocksDB API and print the number of keys, the LSM-tree levels, the first key-value pairs and the result of a range query.
+
 ## Results summary
 
 500,000 keys, 500,000 updates and 500 range queries of selectivity 0.1 per workload, on a 7200 rpm hard disk (WSL2, Ubuntu). MB = 2^20 bytes. Full per-run metrics are in `results/summary.csv`.

@@ -1,0 +1,27 @@
+Restart (close + reopen) integrity check, hot/cold workload, checked with demo/inspect_db-style program (full scan + Get of every inserted key)
+
+--- 200,000 keys, 60 range queries
+wrote 200000 inserts, 200000 updates, 60 range queries (47 hot) to workload.txt
+== rocksdb rc=0
+count 200000 last=zzy69es74h4ct0Ok status=OK
+inserted keys 200000, found by Get 200000
+== rangereduce rc=0
+count 200000 last=zzy69es74h4ct0Ok status=OK
+inserted keys 200000, found by Get 200000
+== heat rc=0
+count 200000 last=zzy69es74h4ct0Ok status=OK
+inserted keys 200000, found by Get 200000
+
+--- 500,000 keys, 100 range queries
+wrote 500000 inserts, 500000 updates, 100 range queries (77 hot) to workload.txt
+== rangereduce rc=0
+count 393759 last=zzyxo2LbjMAkzmal status=OK
+inserted keys 500000, found by Get 449196
+== heat rc=0
+count 464063 last=zzzpplnVi4nDjywC status=OK
+inserted keys 500000, found by Get 476484
+
+== rocksdb rc=0
+count 500000 last=zzzpplnVi4nDjywC status=OK
+inserted keys 500000, found by Get 500000
+
