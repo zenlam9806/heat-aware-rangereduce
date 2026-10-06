@@ -2,7 +2,7 @@
 
 Admission control for query-driven compaction in RocksDB.
 
-This repository contains the code, workloads and results for our SEG2102 (Database Management Systems, Sunway University) group project. We extend **RangeReduce** (Kaushik, Athanassoulis and Sarkar, *RangeReduce: Query-Driven LSM Compactions*, ICDE 2026, [code](https://github.com/SSD-Brandeis/RangeReduce)) with a lightweight **heat-aware admission filter**. The filter tracks how often each part of the key space is range-scanned, and lets RangeReduce write a range back only when that range is being revisited.
+This repository contains the code, workloads and results for our SEG2102 (Database Management Systems, Sunway University) group project. We extend **RangeReduce** (Kaushik, Athanassoulis and Sarkar, *RangeReduce: Query-Driven LSM Compactions*, ICDE 2026, [code](https://github.com/SSD-Brandeis/RangeReduce)) with a lightweight **heat-aware admission filter**. The filter tracks how often each part of the key space is range-scanned, and lets RangeReduce write a range back only when its measured heat meets a threshold relative to the average heat of active buckets.
 
 ## What we changed
 
@@ -80,7 +80,7 @@ The script generates a dataset, runs RocksDB with RangeReduce and the heat-aware
 
 ## How to check our results
 
-Every number, table, graph and screenshot in the report can be checked against the raw data in `results/`. Checks 1 to 3 need only Python and this repository; checks 4 and 5 need the RangeReduce build described above.
+The committed evidence supports independent checks of the report's experimental tables, graphs, result counts, adaptation timings and restart observations. The filter-only overhead benchmark and screenshots require the RangeReduce build rather than the committed run logs. Checks 1 to 3 need only Python and this repository; the later checks explain the additional requirements.
 
 1. **Numbers and tables** (about a minute, standard-library Python only). This rebuilds the metrics of every run from the raw logs (it does not read `summary.csv`) and checks 225 numbers against the values printed in the report: Tables I and III to VII, the confidence intervals, the write-back counts and positions, the adaptation and decay results, the Fig. 11 statement, the threshold sweep, the second seed, the dataset size, the restart results and the per-query result counts. It prints PASS/FAIL for each and exits with an error if any fails. Not covered, because they need the RangeReduce build: the filter-overhead benchmark and the screenshots (points 4 and 6).
    ```bash
@@ -93,7 +93,7 @@ Every number, table, graph and screenshot in the report can be checked against t
    python3 analysis/plot_results.py results
    python3 analysis/paired_table.py results
    ```
-3. **Raw logs.** Each run folder (for example `results/main_hotcold/heat_rel_1.0/`) holds the per-query log `range_queries.csv` (latency and entries read and returned for each of the 500 queries), the filter's per-query decisions `heat.csv`, and RocksDB's own statistics in `stdout.log`. `results/summary.csv` has one row per run and can be opened in Excel.
+3. **Raw logs.** Each run folder (for example `results/main_hotcold/heat_rel_1.0/`) holds the per-query log `range_queries.csv` (latency and entries read and returned for each of the 500 queries), the filter's per-query decisions `heat.csv`, and RocksDB's own statistics in `workload.log`. `results/summary.csv` has one row per completed run and can be opened in Excel; the checker above derives its values from the run logs instead of trusting this summary file.
 4. **Code screenshots (Figs. 3 to 5).** They show `patch/range_heat_tracker.h` (lines 47 to 83 and 126 to 147) and, after applying the patch to RangeReduce commit `4e19184`, lines 408 to 426 of `lib/rocksdb/db/arena_wrapped_db_iter.cc` (our hook is lines 416 to 423). To redraw them (Linux/WSL with the DejaVu fonts; needs `pip install -r requirements.txt`, which includes Pygments and Pillow): `RR=/path/to/RangeReduce python3 analysis/make_code_figs.py results/demo_figures/demo_output.txt`.
 5. **Workloads.** The 132 MB workload files are not stored here, but every experiment folder has a `workload_manifest.txt` (SHA-256 of the exact file used, generator command, Python version) and `queries.csv` (all 500 query ranges). The five-run workload regenerates byte-identically; the earlier workloads were made before the generator fix that fixed the key insertion order, but their keys and all 500 query ranges regenerate exactly.
 6. **Dataset and database screenshots (Figs. 1 and 2).** They come from `N=200000 Q=60 bash demo/demo.sh`; our output is saved in `results/demo_figures/demo_output.txt`. Running the demo again produces a byte-identical dataset and the same key-value pairs and counts; only the sizes of the newest files and RocksDB's estimated key count vary slightly with background-compaction timing (compare `demo_output_second_run.txt`).
