@@ -73,10 +73,14 @@ Results are written to `heat-aware-rangereduce/results/` (override with `RESULTS
 
 ```bash
 bash demo/demo.sh                    # small, about 1 minute
-N=500000 Q=100 bash demo/demo.sh     # same size as the paper, several minutes
+N=500000 Q=100 bash demo/demo.sh     # larger demo: 500,000 keys, 100 range queries, several minutes
 ```
 
 The script generates a dataset, runs RocksDB with RangeReduce and the heat-aware filter on it, lists the RocksDB files on disk, and then uses `demo/inspect_db` to open the database through the RocksDB API and print the number of keys, the LSM-tree levels, the first key-value pairs and the result of a range query.
+
+## Important durability limitation
+
+At 500,000 keys, the evaluated RangeReduce artifact and HA-RR (which builds on it) can lose access to keys after the database is closed and reopened: plain RocksDB returned all 500,000 keys, RangeReduce 449,196 by point lookup (393,759 by full scan) and HA-RR 476,484 (464,063). At 200,000 keys all three returned every key. Live-run result counts are equal across systems, but that does not establish restart durability. Do not use RangeReduce or HA-RR for real data until this is fixed. Details and the test script: `results/restart_check/`.
 
 ## Results summary
 
@@ -94,7 +98,7 @@ The script generates a dataset, runs RocksDB with RangeReduce and the heat-aware
 | Uniform | RangeReduce | 288 | 1.176 | 360 | 1164 | 1.151 |
 | Uniform | HA-RR | 309 | 1.184 | 294 | 1179 | 1.238 |
 
-In short: on skewed workloads HA-RR keeps RangeReduce's read reduction on hot ranges, writes back 51–77% less, and lowers 95th-percentile latency (by 31% on average over five repeated hot/cold runs, `results/rep5_r*`, lower in every run); mean latency differences against RangeReduce were within run-to-run noise on our hard disk; it gives up RangeReduce's space-amplification gains and does not help on uniform workloads. All systems return identical results for every query (`experiments/verify_results.py`).
+In short: on skewed workloads HA-RR keeps RangeReduce's read reduction on hot ranges, writes back 51–77% less, and lowers 95th-percentile latency (by 31% on average over five repeated hot/cold runs, `results/rep5_r*`, lower in every run); mean latency differences against RangeReduce were within run-to-run noise on our hard disk; it gives up RangeReduce's space-amplification gains and does not help on uniform workloads. All systems return the same number of entries for every query (`experiments/verify_results.py` compares result counts, not the individual keys and values).
 
 ## Credit
 

@@ -2,15 +2,15 @@
 # Small live demo (about 1 minute): generate a dataset, load it into RocksDB with the
 # heat-aware filter switched on, then open the database and show what is stored.
 # Usage: bash demo.sh            (small, about 1 minute)
-#        N=500000 Q=100 bash demo.sh   (same size as the paper, several minutes)
+#        N=500000 Q=100 bash demo.sh   (larger demo: 500,000 keys and 100 range queries, several minutes)
 set -e
 N=${N:-20000}   # number of inserts (and updates)
 Q=${Q:-40}      # number of range queries
 RR=${RR:-$HOME/RangeReduce}
 EXP="$(cd "$(dirname "$0")" && pwd)/../experiments"
 HERE=$(cd "$(dirname "$0")" && pwd)
-DEMO=${DEMO:-$HOME/demo_run}
-rm -rf "$DEMO"; mkdir -p "$DEMO"; cd "$DEMO"
+DEMO=${DEMO:-$(mktemp -d "${TMPDIR:-/tmp}/heat-demo.XXXXXX")}   # a fresh temporary folder unless DEMO is set
+mkdir -p "$DEMO"; cd "$DEMO"; echo "Demo folder: $DEMO"
 
 echo "### Step 1: generate the dataset ($N inserts, $N updates, $Q range queries)"
 python3 $EXP/gen_workload.py --pattern hotcold -I $N -U $N -S $Q -Y 0.1 -o workload.txt
