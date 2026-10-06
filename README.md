@@ -91,7 +91,7 @@ At 500,000 keys, the evaluated RangeReduce artifact and HA-RR (which builds on i
 | Hot/cold | RocksDB | 187 | 1.250 | 0 | 1171 | 1.293 |
 | Hot/cold | RangeReduce | 237 | 1.179 | 317 | 1169 | 1.164 |
 | Hot/cold | **HA-RR** | 212 | 1.189 | **85** | **1139** | 1.289 |
-| Shifting | RocksDB | 185 | 1.296 | 0 | 1179 | 1.291 |
+| Shifting | RocksDB | 185 | 1.296 | 0 | 1178 | 1.291 |
 | Shifting | RangeReduce | 208 | 1.160 | 341 | 1172 | 1.223 |
 | Shifting | **HA-RR** | **183** | **1.146** | **167** | **1150** | 1.267 |
 | Uniform | RocksDB | 231 | 1.236 | 0 | 1169 | 1.267 |
