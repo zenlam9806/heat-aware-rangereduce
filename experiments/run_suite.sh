@@ -2,13 +2,14 @@
 # Usage: [GEN_ARGS="..."] run_suite.sh <name> <pattern> <inserts> <updates> <range_queries> <selectivity> <systems...>
 # systems: rocksdb | rangereduce | heat:<abs|rel>:<threshold>
 set -u
-RR=~/RangeReduce
-EXP=~/experiments
+EXP=$(cd "$(dirname "$0")" && pwd)          # this folder, wherever the repository was cloned
+RR=${RR:-$HOME/RangeReduce}                  # patched RangeReduce checkout (override with RR=/path)
+RESULTS=${RESULTS:-$(cd "$EXP/.." && pwd)/results}
 NAME=$1; PATTERN=$2; I=$3; U=$4; S=$5; Y=$6; shift 6
 SYSTEMS=("$@")
 T=6
 LB=$(python3 -c "print(1/$T)")
-WDIR=$EXP/results/$NAME
+WDIR=$RESULTS/$NAME
 mkdir -p "$WDIR"
 cd "$WDIR"
 

@@ -13,7 +13,7 @@ def returned(run):
 
 ref = returned(w / "rocksdb")
 ok = True
-for s in sorted(p for p in w.iterdir() if (p / "done").exists()):
+for s in sorted(p for p in w.iterdir() if (p / "range_queries.csv").exists()):
     got = returned(s)
     same = got == ref
     ok &= same

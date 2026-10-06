@@ -24,9 +24,13 @@ The filter is configured with environment variables, so one binary runs all thre
 
 ## Build (Linux or WSL2)
 
+Clone this repository and RangeReduce side by side. The patch was tested against RangeReduce commit `4e19184ce3197b02cba16852803e1359d0f77eae` (30 June 2026); check out that commit, because the patch matches exact lines of the source.
+
 ```bash
+git clone https://github.com/zenlam9806/heat-aware-rangereduce.git
 git clone https://github.com/SSD-Brandeis/RangeReduce.git
-cd RangeReduce && git submodule update --init lib/KV-WorkloadGenerator lib/tectonic
+cd RangeReduce && git checkout 4e19184ce3197b02cba16852803e1359d0f77eae
+git submodule update --init lib/KV-WorkloadGenerator lib/tectonic
 python3 ../heat-aware-rangereduce/patch/apply_patch.py .
 mkdir -p build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release -DFAIL_ON_WARNINGS=OFF -DWITH_TESTS=OFF \
@@ -34,15 +38,34 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DFAIL_ON_WARNINGS=OFF -DWITH_TESTS=OFF \
 make -j"$(nproc)"
 ```
 
-Requirements: GCC 11 or newer, CMake 3.10+, `libgflags-dev`, and Rust nightly (for the Tectonic generator that the RangeReduce build also compiles).
+Requirements: GCC 11 or newer, CMake 3.10+, `libgflags-dev`, and Rust nightly (for the Tectonic generator that the RangeReduce build also compiles; run `source ~/.cargo/env` before `make`). Tested environment: Ubuntu under WSL2 on Windows 10, GCC 15, CMake 4.2, Python 3.12+. The build produces `RangeReduce/bin/working_version`.
+
+Python packages for the analysis scripts:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+## Quick check (about 1 minute)
+
+After building, run the small demo. It needs no other setup and shows that everything works end to end:
+
+```bash
+RR=/path/to/RangeReduce bash heat-aware-rangereduce/demo/demo.sh
+```
+
+Expected output: four steps, ending with `Exact number of keys (full scan): 20000` and the result of a range query. If `RR` is not set, the scripts look for RangeReduce in `~/RangeReduce`.
 
 ## Run the experiments
 
 ```bash
-cd experiments
-./run_all.sh            # generates workloads and runs RocksDB, RangeReduce and HA-RR
-python3 analyze.py results
+cd heat-aware-rangereduce/experiments
+RR=/path/to/RangeReduce ./run_all.sh     # runs RocksDB, RangeReduce and HA-RR; several hours on a hard disk
+RR=/path/to/RangeReduce ./run_repeat5.sh # five repetitions of the hot/cold experiment
+./verify_all.sh main_hotcold main_uniform main_shifting   # checks all systems returned identical results
 ```
+
+Results are written to `heat-aware-rangereduce/results/` (override with `RESULTS=/path`), and `analyze.py` writes `results/summary.csv`. Already-finished runs are skipped, so the scripts can be re-run safely. The results of our own runs are already included in `results/`.
 
 `gen_workload.py` writes workloads in the same `I`/`U`/`S` format as Tectonic, with three range-query patterns: `uniform`, `hotcold` and `shifting`.
 

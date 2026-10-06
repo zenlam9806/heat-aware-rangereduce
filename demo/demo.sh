@@ -6,10 +6,10 @@
 set -e
 N=${N:-20000}   # number of inserts (and updates)
 Q=${Q:-40}      # number of range queries
-RR=~/RangeReduce
-EXP=~/experiments
+RR=${RR:-$HOME/RangeReduce}
+EXP="$(cd "$(dirname "$0")" && pwd)/../experiments"
 HERE=$(cd "$(dirname "$0")" && pwd)
-DEMO=~/demo_run
+DEMO=${DEMO:-$HOME/demo_run}
 rm -rf "$DEMO"; mkdir -p "$DEMO"; cd "$DEMO"
 
 echo "### Step 1: generate the dataset ($N inserts, $N updates, $Q range queries)"
