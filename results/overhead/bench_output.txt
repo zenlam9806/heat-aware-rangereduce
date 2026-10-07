@@ -3,7 +3,7 @@ date: 2026-10-07T19:49:16+08:00   host:  Intel(R) Core(TM) i5-8400 CPU @ 2.80GHz
 compiler: g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0
 build: g++ -std=c++20 -O2 -I $RR/lib/rocksdb -I $RR/lib/rocksdb/include experiments/bench_tracker.cc -o bench_tracker
 run: RR_HEAT=1 RR_HEAT_MODE=rel RR_HEAT_THRESHOLD=1.0 ./bench_tracker results/<workload>/workload.txt  (3 runs each)
-output columns: queries, mean buckets spanned per query, mean nanoseconds per query, admitted (bucket-level count printed by the tool)
+output columns: queries, mean buckets spanned per query, mean nanoseconds per query, admitted (total admitted query invocations across all 200 rounds)
 
 main_uniform run1: queries=500 mean_buckets_per_query=1971 ns_per_query=3143 admitted=66801
 main_uniform run2: queries=500 mean_buckets_per_query=1971 ns_per_query=3195 admitted=66801
