@@ -80,7 +80,7 @@ The script generates a dataset, runs RocksDB with RangeReduce and the heat-aware
 
 ## How to check our results
 
-The committed evidence supports independent checks of the report's experimental tables, graphs, result counts, adaptation timings and restart observations. The filter-only overhead benchmark and screenshots require the RangeReduce build rather than the committed run logs. Checks 1 to 3 need only Python and this repository; the later checks explain the additional requirements.
+The committed evidence supports independent checks of the report's experimental tables, graphs, result counts, adaptation timings and restart observations. The filter-only overhead benchmark and screenshots require the RangeReduce build rather than the committed run logs; the raw benchmark output, with the exact command and compiler, is in `results/overhead/bench_output.txt`. Checks 1 to 3 need only Python and this repository; the later checks explain the additional requirements.
 
 1. **Numbers and tables** (about a minute, standard-library Python only). This rebuilds the metrics of every run from the raw logs (it does not read `summary.csv`) and checks 225 numbers against the values printed in the report: Tables I and III to VII, the confidence intervals, the write-back counts and positions, the adaptation and decay results, the Fig. 11 statement, the threshold sweep, the second seed, the dataset size, the restart results and the per-query result counts. It prints PASS/FAIL for each and exits with an error if any fails. Not covered, because they need the RangeReduce build: the filter-overhead benchmark and the screenshots (points 4 and 6).
    ```bash
