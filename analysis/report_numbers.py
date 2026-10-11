@@ -235,8 +235,8 @@ for w in ["main_hotcold", "main_uniform", "main_shifting"]:
     check(f"{w}: first range query is admitted (cold start)", admitted(f"{w}/heat_rel_1.0")[0], 1, 0)
 check("smallest mean MB per write-back over the six runs", min(per_wb), 12, 0.5)
 check("largest mean MB per write-back over the six runs", max(per_wb), 14, 0.5)
-check("smallest break-even number of re-reads m*", min(breakeven), 8, 0.5)
-check("largest break-even number of re-reads m*", max(breakeven), 10, 0.5)
+check("smallest break-even number of re-reads m*", min(breakeven), 7.7, 0.05)
+check("largest break-even number of re-reads m*", max(breakeven), 9.7, 0.05)
 check("RangeReduce efficiency below 1 on this many of 3 workloads",
       sum(eff(w, rr) < 1 for w in ["main_hotcold", "main_uniform", "main_shifting"]), 2, 0)
 
