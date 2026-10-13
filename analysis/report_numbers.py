@@ -58,7 +58,7 @@ def admitted(run):
     return [int(r["admitted"]) for r in csv.DictReader(open(RES / run / "heat.csv"))]
 
 
-print("== Table III (single runs)")
+print("== Table IV (single runs)")
 T3 = {"main_hotcold": {"rocksdb": (187, 502, 1.250, 0, 1171, 1.293, 312), "rangereduce": (237, 1097, 1.179, 317, 1169, 1.164, 227),
                        "heat_rel_1.0": (212, 860, 1.189, 85, 1139, 1.289, 329)},
       "main_uniform": {"rocksdb": (231, 576, 1.236, 0, 1169, 1.267, 310), "rangereduce": (288, 1208, 1.176, 360, 1164, 1.151, 198),
@@ -78,7 +78,7 @@ for w, s, e in [("main_uniform", "rangereduce", 0.51), ("main_uniform", "heat_re
                 ("main_hotcold", "heat_rel_1.0", 2.16), ("main_shifting", "rangereduce", 1.21), ("main_shifting", "heat_rel_1.0", 2.73)]:
     check(f"{w} {s} efficiency", eff(w, s), e, 0.005)
 
-print("\n== Tables I and V (five repeated hot/cold runs, mean and SD)")
+print("\n== Tables I and VI (five repeated hot/cold runs, mean and SD)")
 for s, label, key, div, mean, sd, tol in [
         ("rangereduce", "write-back MB", "rr_write_bytes", MB, 330, 3, 0.5), ("heat_rel_1.0", "write-back MB", "rr_write_bytes", MB, 79, 2, 0.5),
         ("rocksdb", "P95 ms", "rq_p95_ms", 1, 678, 74, 0.5), ("rangereduce", "P95 ms", "rq_p95_ms", 1, 1303, 95, 0.5),
@@ -110,7 +110,7 @@ d = [pct(v(w, "heat_rel_1.0", "rr_write_bytes"), v(w, "rangereduce", "rr_write_b
 check("write-back change, best run %", min(d), -77, 0.5)
 check("write-back change, worst run %", max(d), -75, 0.5)
 
-print("\n== Table VII, our two rows (change vs RocksDB, means of the five runs)")
+print("\n== Table VIII, our two rows (change vs RocksDB, means of the five runs)")
 for label, key, rr, ha, tol in [("compaction debt", "compaction_debt_bytes", -25, 0.1, 0.5), ("space amp", "space_amp", -9.3, -0.4, 0.05),
                                 ("read amp", "rq_read_amp", -4.9, -5.3, 0.05), ("mean latency", "rq_mean_ms", 12, 2, 0.5),
                                 ("P95 latency", "rq_p95_ms", 92, 32, 0.5), ("total writes", "total_write_bytes", 1.9, -2.6, 0.05),
@@ -119,7 +119,7 @@ for label, key, rr, ha, tol in [("compaction debt", "compaction_debt_bytes", -25
     check(f"{label} RangeReduce %", pct(st.mean(v(w, "rangereduce", key) for w in REPS), base), rr, tol)
     check(f"{label} HA-RR %", pct(st.mean(v(w, "heat_rel_1.0", key) for w in REPS), base), ha, tol)
 
-print("\n== Table IV (same queries split by HA-RR's decision; mean ms of queries and read amplification)")
+print("\n== Table V (same queries split by HA-RR's decision; mean ms of queries and read amplification)")
 T5 = {"main_hotcold": (426, {"rocksdb": (174, 1.247, 261, 1.270), "rangereduce": (185, 1.175, 534, 1.202), "heat_rel_1.0": (200, 1.175, 280, 1.273)}),
       "main_uniform": (330, {"rocksdb": (227, 1.231, 237, 1.246), "rangereduce": (263, 1.173, 336, 1.182), "heat_rel_1.0": (323, 1.163, 283, 1.225)}),
       "main_shifting": (391, {"rocksdb": (175, 1.293, 220, 1.305), "rangereduce": (166, 1.153, 359, 1.185), "heat_rel_1.0": (175, 1.127, 213, 1.214)})}
@@ -144,7 +144,7 @@ ratio = [float(r["heat"]) / float(r["bar"]) for r in csv.DictReader(open(RES / "
 check("queries with heat >= 4x mean %", 100 * sum(x >= 4 for x in ratio) / len(ratio), 76, 0.5)
 check("queries with heat < 0.5x mean %", 100 * sum(x < 0.5 for x in ratio) / len(ratio), 14, 0.5)
 
-print("\n== Shifting workload: adaptation and Table VI (decay)")
+print("\n== Shifting workload: adaptation and Table VII (decay)")
 ALPH = sorted("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")  # byte order of the key alphabet
 
 
@@ -173,8 +173,8 @@ def rolling_median(xs, n=40, min_n=10):
 lat = {s: rolling_median([float(r["RQ Total Time"]) / 1e6 for r in queries(f"main_shifting/{s}")]) for s in SYS}
 for move, end in [(167, 333), (333, 500)]:
     below = [q for q in range(move + 1, end + 1) if all(lat[s][q - 1] < lat["rocksdb"][q - 1] for s in ["rangereduce", "heat_rel_1.0"])]
-    check(f"Fig. 5: first query after move {move} with both medians below RocksDB (within 30)", min(below) - move, min(min(below) - move, 30), 0)
-    check(f"Fig. 5: share of the phase with both medians below RocksDB > 50%", 100 * len(below) / (end - move) > 50, 1, 0)
+    check(f"Fig. 6: first query after move {move} with both medians below RocksDB (within 30)", min(below) - move, min(min(below) - move, 30), 0)
+    check(f"Fig. 6: share of the phase with both medians below RocksDB > 50%", 100 * len(below) / (end - move) > 50, 1, 0)
 
 print("\n== Threshold sweep, absolute threshold and second seed")
 rr = "rangereduce"
