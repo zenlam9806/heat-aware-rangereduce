@@ -7,7 +7,7 @@ import sys
 RESULTS = pathlib.Path(sys.argv[1]).expanduser()
 HEAT = sys.argv[2] if len(sys.argv) > 2 else "heat_rel_1.0"
 OUT = pathlib.Path(__file__).resolve().parent.parent / "tables" / "paired.tex"
-NAMES = {"rocksdb": "RocksDB", "rangereduce": "RangeReduce", HEAT: "HA-RR (ours)"}
+NAMES = {"rocksdb": "RocksDB", "rangereduce": "RangeReduce", HEAT: "HA-RR"}
 WORKLOADS = [("main_hotcold", "Hot/cold"), ("main_uniform", "Uniform"), ("main_shifting", "Shifting")]
 
 

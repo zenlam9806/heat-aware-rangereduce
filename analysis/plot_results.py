@@ -26,7 +26,7 @@ plt.rcParams.update({
     "xtick.major.width": 0.6, "ytick.major.width": 0.6, "grid.linewidth": 0.4,
 })
 COLORS = {"rocksdb": "#8c8c8c", "rangereduce": "#d9822b", "ha-rr": "#1f6fb5"}
-LABELS = {"rocksdb": "RocksDB", "rangereduce": "RangeReduce", "ha-rr": "HA-RR (ours)"}
+LABELS = {"rocksdb": "RocksDB", "rangereduce": "RangeReduce", "ha-rr": "HA-RR"}
 WORKLOADS = {"uniform": "Uniform", "hotcold": "Hot/cold", "shifting": "Shifting"}
 
 
