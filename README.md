@@ -123,7 +123,7 @@ Every system was re-run with the RangeReduce authors' own code (commit `4e19184`
 | 80/20 | RangeReduce | 3.40 | 5.41 | 1.064 | 2,092 | 27.9 | 49.5 | 1.17 | 2.5 |
 | 80/20 | HA-RR | 3.61 | 6.33 | 1.095 | 848 | 9.7 | 41.0 | 1.54 | 9.6 |
 
-In short: RangeReduce's published gains reproduced. On 80/20, HA-RR skipped 79% of cold queries and wrote back 65% less (17% fewer total writes) than RangeReduce, but was 6% slower on average; on hot/cold its 95th-percentile latency was 25% lower; on uniform it was 37% slower. At this scale a write-back pays for itself after less than one later scan, so skipping it saves writes but not time.
+In short: RangeReduce's published gains reproduced. On 80/20, HA-RR skipped 79% of the uniformly placed queries and wrote back 65% less (17% fewer total writes) than RangeReduce, but was 6% slower on average; on hot/cold its 95th-percentile latency was 25% lower; on uniform it was 37% slower. These are single runs. The latency results are consistent with the cost model, which estimates that at this scale a write-back recovers its I/O cost within one later scan, but one run cannot prove the cause.
 
 Recompute everything from the raw logs:
 
