@@ -90,7 +90,7 @@ def bars(ax, key, title, fmt="{:.2f}", skip=()):
 
 
 # 1. Latency and read amplification
-fig, axs = plt.subplots(1, 4, figsize=(7.16, 1.6))
+fig, axs = plt.subplots(1, 4, figsize=(7.16, 1.45))
 bars(axs[0], "mean_s", "(a) Mean latency (s)")
 bars(axs[1], "p95_s", "(b) P95 latency (s)")
 bars(axs[2], "p99_s", "(c) P99 latency (s)", fmt="{:.1f}")
@@ -101,7 +101,7 @@ fig.tight_layout(w_pad=0.6)
 save(fig, "fs_latency")
 
 # 2. Writes and their value
-fig, axs = plt.subplots(1, 4, figsize=(7.16, 1.6))
+fig, axs = plt.subplots(1, 4, figsize=(7.16, 1.45))
 bars(axs[0], "writeback_GB", "(a) Write-back (GB)", fmt="{:.1f}")
 bars(axs[1], "total_write_GB", "(b) Total bytes written (GB)", fmt="{:.1f}")
 bars(axs[2], "eta", "(c) Reads saved per byte written", fmt="{:.1f}", skip=("RocksDB",))
@@ -111,7 +111,7 @@ fig.tight_layout(w_pad=0.6)
 save(fig, "fs_writes")
 
 # 3. Latency distribution
-fig, axs = plt.subplots(1, len(settings), figsize=(7.16, 1.55), sharey=True)
+fig, axs = plt.subplots(1, len(settings), figsize=(7.16, 1.4), sharey=True)
 for j, s in enumerate(settings):
     for n in systems:
         if (s, n) not in runs:
@@ -130,7 +130,7 @@ fig.tight_layout(w_pad=0.6)
 save(fig, "fs_cdf")
 
 # 4. Rolling median latency over the run
-fig, axs = plt.subplots(1, len(settings), figsize=(7.16, 1.55), sharey=True)
+fig, axs = plt.subplots(1, len(settings), figsize=(7.16, 1.4), sharey=True)
 k = 300
 for j, s in enumerate(settings):
     for n in systems:
@@ -153,7 +153,7 @@ fig.tight_layout(w_pad=0.6)
 save(fig, "fs_timeline")
 
 # 5. HA-RR admission over the run
-fig, ax = plt.subplots(figsize=(3.45, 1.4))
+fig, ax = plt.subplots(figsize=(3.45, 1.2))
 k = 500
 for s in settings:
     for n in ("HA-RR", "HA-RR_theta2"):

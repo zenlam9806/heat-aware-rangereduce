@@ -35,6 +35,9 @@ if kind == "hotcold8020":
 elif kind == "hotcold":
     sections = [{"groups": [ins, phase(U, S, 0.5)]}]
 else:
-    sections = [{"groups": [ins] + [phase(U // 3, S // 3, m) for m in (0.25, 0.5, 0.75)]}]
+    # The full-size shifting run used U // 3 in every phase (8,388,606 updates in total, 2 fewer than U).
+    # The last phase now takes the remainder, so a new run has exactly U updates and S range queries.
+    parts = [(U // 3, S // 3), (U // 3, S // 3), (U - 2 * (U // 3), S - 2 * (S // 3))]
+    sections = [{"groups": [ins] + [phase(u, s, m) for (u, s), m in zip(parts, (0.25, 0.5, 0.75))]}]
 json.dump({"sections": sections}, open(out, "w"), indent=2)
 print("wrote", out)
