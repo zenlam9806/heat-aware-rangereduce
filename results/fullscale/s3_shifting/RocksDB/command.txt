@@ -1,0 +1,1 @@
+env RR_HEAT=0 /home/user/rr_orig/bin/working_version -I 8388608 -U 8388608 -S 9000 -Y 0.1 -E 128 -B 32 -P 1024 -T 6 --progress 1 -V 0 --sanity 0 --usedb 0 --snap 0 --rq 0 --tmv 1

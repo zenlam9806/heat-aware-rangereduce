@@ -1,0 +1,82 @@
+  cmpt_sty  cmpt_pri   T         P         B         E         M file_size   L1_size   blk_cch       BPK
+         1         1   6      1024        32       128   4194304   4194304  25165824         0        10
+=====================
+ith_op ...8388607
+Column Family Name: default, Size: 1164966062 bytes, Files Count: 276
+Level Stats:
+Level: 0, Files: 0, Size: 0 bytes
+Level: 1, Files: 6, Size: 24947749 bytes
+Level: 2, Files: 23, Size: 95405704 bytes
+Level: 3, Files: 36, Size: 148947102 bytes
+Level: 4, Files: 211, Size: 895665507 bytes
+Level: 5, Files: 0, Size: 0 bytes
+Level: 6, Files: 0, Size: 0 bytes
+Level: 7, Files: 0, Size: 0 bytes
+Level: 8, Files: 0, Size: 0 bytes
+Level: 9, Files: 0, Size: 0 bytes
+Level: 10, Files: 0, Size: 0 bytes
+Level: 11, Files: 0, Size: 0 bytes
+Level: 12, Files: 0, Size: 0 bytes
+Level: 13, Files: 0, Size: 0 bytes
+Level: 14, Files: 0, Size: 0 bytes
+Level: 15, Files: 0, Size: 0 bytes
+Level: 16, Files: 0, Size: 0 bytes
+Level: 17, Files: 0, Size: 0 bytes
+Level: 18, Files: 0, Size: 0 bytes
+Level: 19, Files: 0, Size: 0 bytes
+
+RocksDB Statistics: 
+rocksdb.compact.read.bytes: 15965728984
+rocksdb.compact.write.bytes: 15719611904
+rocksdb.flush.write.bytes: 1174576174
+rocksdb.rangereduce.file.count: 0
+rocksdb.rangereduce.write.bytes: 0
+rocksdb.compaction.times.micros: 0
+
+Inserts Execution Time: 1874316402034
+Updates Execution Time: 0
+PointQuery Execution Time: 0
+PointDelete Execution Time: 0
+RangeQuery Execution Time: 0
+RangeDelete Execution Time: 0
+=====================
+Column Family Name: default, Size: 1255795428 bytes, Files Count: 307
+Level Stats:
+Level: 0, Files: 0, Size: 0 bytes
+Level: 1, Files: 2, Size: 3176852 bytes
+Level: 2, Files: 5, Size: 6360457 bytes
+Level: 3, Files: 27, Size: 90847213 bytes
+Level: 4, Files: 273, Size: 1155410906 bytes
+Level: 5, Files: 0, Size: 0 bytes
+Level: 6, Files: 0, Size: 0 bytes
+Level: 7, Files: 0, Size: 0 bytes
+Level: 8, Files: 0, Size: 0 bytes
+Level: 9, Files: 0, Size: 0 bytes
+Level: 10, Files: 0, Size: 0 bytes
+Level: 11, Files: 0, Size: 0 bytes
+Level: 12, Files: 0, Size: 0 bytes
+Level: 13, Files: 0, Size: 0 bytes
+Level: 14, Files: 0, Size: 0 bytes
+Level: 15, Files: 0, Size: 0 bytes
+Level: 16, Files: 0, Size: 0 bytes
+Level: 17, Files: 0, Size: 0 bytes
+Level: 18, Files: 0, Size: 0 bytes
+Level: 19, Files: 0, Size: 0 bytes
+
+RocksDB Statistics: 
+rocksdb.compact.read.bytes: 17969007112
+rocksdb.compact.write.bytes: 17683553792
+rocksdb.flush.write.bytes: 2346359753
+rocksdb.rangereduce.file.count: 14753
+rocksdb.rangereduce.write.bytes: 44758994360
+rocksdb.compaction.times.micros: 0
+
+=====================
+Workload Execution Time: 24811230461840
+Inserts Execution Time: 1874316418334
+Updates Execution Time: 607137599176
+PointQuery Execution Time: 0
+PointDelete Execution Time: 0
+RangeQuery Execution Time: 22302026914667
+RangeDelete Execution Time: 0
+===========END HERE=========

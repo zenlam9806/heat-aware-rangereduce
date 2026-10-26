@@ -1,0 +1,4 @@
+RocksDB_seconds 37991  (attempt 1)
+RangeReduce_seconds 32856  (attempt 1)
+HA-RR_seconds 32226  (attempt 1)
+HA-RR_theta2_seconds 29742

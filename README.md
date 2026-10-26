@@ -103,7 +103,38 @@ The committed evidence supports independent checks of the report's experimental 
 
 At 500,000 keys, the evaluated RangeReduce artifact and HA-RR (which builds on it) can lose access to keys after the database is closed and reopened: plain RocksDB returned all 500,000 keys, RangeReduce 449,196 by point lookup (393,759 by full scan) and HA-RR 476,484 (464,063). At 200,000 keys all three returned every key. Live-run result counts are equal across systems, but that does not establish restart durability. Do not use RangeReduce or HA-RR for real data until this is fixed. Details and the test script: `results/restart_check/` (reproduce the failure with `N=500000 Q=100 bash results/restart_check/run_check.sh`; the passing case is `N=200000 Q=60`).
 
-## Results summary
+## Full-size results (the RangeReduce authors' setup)
+
+Every system was re-run with the RangeReduce authors' own code (commit `4e19184`), their Tectonic workload generator and their main configuration: 8,388,608 inserts, 8,388,608 updates and 9,000 range queries of selectivity 0.1 (`-I 8388608 -U 8388608 -S 9000 -Y 0.1 -E 128 -B 32 -P 1024 -T 6`), on the same 7200 rpm hard disk. One run took 7 to 11 hours; each configuration was run once. Raw logs (without the large workload and database files): `results/fullscale/`. Scripts: `experiments/fullscale/` (`driver.sh` runs everything, `mkspec.py` writes the workload specifications, `watchdog.sh` stops a frozen run). GB = 2^30 bytes.
+
+| Workload | System | Mean (s) | P95 (s) | Read amp. | Write-backs | Write-back (GB) | Total writes (GB) | Space amp. | Debt (GB) |
+|----------|--------|------:|------:|------:|------:|------:|------:|------:|------:|
+| Uniform | RocksDB | 3.47 | 4.68 | 1.204 | 0 | 0.0 | 34.7 | 1.42 | 13.6 |
+| Uniform | RangeReduce | 2.48 | 4.41 | 1.067 | 4,158 | 41.7 | 60.3 | 1.17 | 2.3 |
+| Uniform | HA-RR | 3.39 | 5.89 | 1.079 | 3,408 | 37.3 | 61.3 | 1.23 | 3.8 |
+| Hot/cold | RocksDB | 3.93 | 5.56 | 1.158 | 0 | 0.0 | 34.8 | 1.41 | 13.5 |
+| Hot/cold | RangeReduce | 3.36 | 6.35 | 1.066 | 837 | 8.3 | 40.1 | 1.57 | 10.2 |
+| Hot/cold | HA-RR | 3.29 | 4.79 | 1.067 | 827 | 8.1 | 40.0 | 1.57 | 10.3 |
+| Hot/cold | HA-RR, θ = 2 | 3.03 | 4.61 | 1.068 | 764 | 7.5 | 39.6 | 1.57 | 10.3 |
+| Shifting | RocksDB | 4.15 | 6.31 | 1.168 | 0 | 0.0 | 34.9 | 1.42 | 13.5 |
+| Shifting | RangeReduce | 3.17 | 4.84 | 1.058 | 802 | 8.7 | 39.7 | 1.54 | 8.9 |
+| Shifting | HA-RR | 3.20 | 5.33 | 1.071 | 758 | 8.2 | 39.5 | 1.54 | 9.0 |
+| 80/20 | RocksDB | 3.48 | 4.69 | 1.166 | 0 | 0.0 | 34.7 | 1.41 | 13.6 |
+| 80/20 | RangeReduce | 3.40 | 5.41 | 1.064 | 2,092 | 27.9 | 49.5 | 1.17 | 2.5 |
+| 80/20 | HA-RR | 3.61 | 6.33 | 1.095 | 848 | 9.7 | 41.0 | 1.54 | 9.6 |
+
+In short: RangeReduce's published gains reproduced. On 80/20, HA-RR skipped 79% of cold queries and wrote back 65% less (17% fewer total writes) than RangeReduce, but was 6% slower on average; on hot/cold its 95th-percentile latency was 25% lower; on uniform it was 37% slower. At this scale a write-back pays for itself after less than one later scan, so skipping it saves writes but not time.
+
+Recompute everything from the raw logs:
+
+```bash
+python3 analysis/fullscale.py              # one metrics row per run -> results/fullscale/summary.csv
+python3 analysis/fullscale_tables.py       # the two LaTeX tables of the report
+python3 analysis/report_numbers_fullscale.py   # checks every full-size number in the report (126 checks)
+python3 analysis/plot_fullscale.py         # the full-size figures (needs matplotlib)
+```
+
+## Small-scale results
 
 500,000 keys, 500,000 updates and 500 range queries of selectivity 0.1 per workload, on a 7200 rpm hard disk (WSL2, Ubuntu). MB = 2^20 bytes. Full per-run metrics are in `results/summary.csv`.
 

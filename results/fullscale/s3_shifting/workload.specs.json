@@ -1,0 +1,104 @@
+{
+  "sections": [
+    {
+      "groups": [
+        {
+          "inserts": {
+            "op_count": 8388608,
+            "key": {
+              "uniform": {
+                "len": 16.0
+              }
+            },
+            "val": {
+              "uniform": {
+                "len": 112.0
+              }
+            }
+          }
+        },
+        {
+          "updates": {
+            "op_count": 2796202,
+            "val": {
+              "uniform": {
+                "len": 112.0
+              }
+            },
+            "selection": {
+              "uniform": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          },
+          "range_queries": {
+            "op_count": 3000,
+            "selectivity": 0.1,
+            "range_format": "StartEnd",
+            "selection": {
+              "normal": {
+                "mean": 0.25,
+                "std_dev": 0.015
+              }
+            }
+          }
+        },
+        {
+          "updates": {
+            "op_count": 2796202,
+            "val": {
+              "uniform": {
+                "len": 112.0
+              }
+            },
+            "selection": {
+              "uniform": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          },
+          "range_queries": {
+            "op_count": 3000,
+            "selectivity": 0.1,
+            "range_format": "StartEnd",
+            "selection": {
+              "normal": {
+                "mean": 0.5,
+                "std_dev": 0.015
+              }
+            }
+          }
+        },
+        {
+          "updates": {
+            "op_count": 2796202,
+            "val": {
+              "uniform": {
+                "len": 112.0
+              }
+            },
+            "selection": {
+              "uniform": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          },
+          "range_queries": {
+            "op_count": 3000,
+            "selectivity": 0.1,
+            "range_format": "StartEnd",
+            "selection": {
+              "normal": {
+                "mean": 0.75,
+                "std_dev": 0.015
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 73dded6..193d142 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -37,13 +37,14 @@ set(SOURCES
+ target_compile_definitions(rocksdb PRIVATE PRINT_TREE)
+ target_compile_definitions(rocksdb-shared PRIVATE PRINT_TREE)
+ add_executable(working_version ${SOURCES})
++target_compile_definitions(working_version PRIVATE TIMER PROFILE)
+ 
+ target_include_directories(working_version PRIVATE
+     ${CMAKE_CURRENT_SOURCE_DIR}/include
+     ${CMAKE_CURRENT_SOURCE_DIR}/lib/rocksdb/include
+ )
+ 
+-target_compile_options(working_version PRIVATE -O2)
++target_compile_options(working_version PRIVATE -O2 -fno-rtti)
+ 
+ target_link_libraries(working_version PRIVATE
+     rocksdb

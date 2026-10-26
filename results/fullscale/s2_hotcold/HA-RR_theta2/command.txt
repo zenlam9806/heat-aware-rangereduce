@@ -1,0 +1,1 @@
+env RR_HEAT=1 RR_HEAT_MODE=rel RR_HEAT_THRESHOLD=2.0 RR_HEAT_DECAY=1000 RR_HEAT_LOG=/home/user/newexp/runs/s2_hotcold/HA-RR_theta2/heat.csv ~/rr_harr/bin/working_version -I 8388608 -U 8388608 -S 9000 -Y 0.1 -E 128 -B 32 -P 1024 -T 6 --progress 1 -V 0 --sanity 0 --usedb 0 --snap 0 --rq 1 --lb .166666666 --re 1

@@ -1,0 +1,44 @@
+{
+  "sections": [
+    {
+      "groups": [
+        {
+          "inserts": {
+            "op_count": 8388608.0,
+            "key": {
+              "uniform": {
+                "len": 16.0
+              }
+            },
+            "val": {
+              "uniform": {
+                "len": 112.0
+              }
+            }
+          }
+        },
+        {
+          "updates": {
+            "op_count": 8388608.0,
+            "val": {
+              "uniform": {
+                "len": 112.0
+              }
+            },
+            "selection": {
+              "uniform": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          },
+          "range_queries": {
+            "op_count": 9000.0,
+            "selectivity": 0.1,
+            "range_format": "StartEnd"
+          }
+        }
+      ]
+    }
+  ]
+}
