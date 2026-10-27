@@ -16,6 +16,8 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+plt.rcParams["pdf.fonttype"] = 42  # embed TrueType fonts (IEEE PDF eXpress rejects Type 3 fonts)
+plt.rcParams["ps.fonttype"] = 42
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import fullscale as fs  # noqa: E402
