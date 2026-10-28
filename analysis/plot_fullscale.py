@@ -26,7 +26,7 @@ ROOT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else pathlib.Path(__file__
 OUT = pathlib.Path(sys.argv[2]) if len(sys.argv) > 2 else pathlib.Path(__file__).resolve().parent.parent / "figures"
 OUT.mkdir(parents=True, exist_ok=True)
 plt.rcParams.update({"font.family": "serif", "font.size": 7.5, "axes.spines.top": False, "axes.spines.right": False,
-                     "axes.titlesize": 7.8, "xtick.labelsize": 6.0, "ytick.labelsize": 6.8, "axes.labelsize": 7.2})
+                     "axes.titlesize": 8.2, "xtick.labelsize": 6.8, "ytick.labelsize": 7.4, "axes.labelsize": 7.6})
 COL = {"RocksDB": "#8c8c8c", "RangeReduce": "#d9822b", "HA-RR": "#1f6fb5", "HA-RR_theta2": "#7fb3e0"}
 HATCH = {"RocksDB": "", "RangeReduce": "", "HA-RR": "", "HA-RR_theta2": "////"}
 LABEL = {"RocksDB": "RocksDB", "RangeReduce": "RangeReduce", "HA-RR": "HA-RR ($\\theta$ = 1)",
@@ -84,10 +84,12 @@ def bars(ax, key, title, fmt="{:.2f}", skip=()):
             y = runs[(s, n)][0].get(key) or 0.0
             top = max(top, y)
             ax.bar(x, y, w, color=COL[n], hatch=HATCH[n], edgecolor="white", linewidth=0.3)
-            ax.text(x, y, fmt.format(y), ha="center", va="bottom", fontsize=4.6, rotation=90)
-    ax.set_xticks(range(len(settings)), [fs.NAMES[s] for s in settings], fontsize=5.6)
+    # exact values are in Table III, so the bars carry no number labels
+    ax.set_xticks(range(len(settings)), [fs.NAMES[s] for s in settings], fontsize=6.6, rotation=25, ha="right", rotation_mode="anchor")
     ax.set_xlim(-0.55, len(settings) - 0.45)
-    ax.set_ylim(0, top * 1.28)
+    ax.set_ylim(0, top * 1.12)
+    ax.grid(axis="y", alpha=0.25, lw=0.4)
+    ax.set_axisbelow(True)
     ax.set_title(title)
 
 
